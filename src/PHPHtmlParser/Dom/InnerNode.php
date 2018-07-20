@@ -143,6 +143,87 @@ abstract class InnerNode extends ArrayNode
 
         return true;
     }
+    public function insertBefore($id, AbstractNode $child)
+    {
+        $key = null;
+
+        if ( ! isset($this->children[$id])) {
+            return $this;
+        }
+
+        // check integrity
+        if ($this->isAncestor($child->id())) {
+            throw new CircularException('Can not add child. It is my ancestor.');
+        }
+
+        // check if child is itself
+        if ($child->id() == $this->id) {
+            throw new CircularException('Can not set itself as a child.');
+        }
+
+        $prevId = $this->children[$id]['prev'];
+        $this->children[$id]['prev'] = $child->id();
+
+        if ($prevId) {
+            $this->children[$prevId]['next'] = $child->id();
+        }
+
+        // add the child
+        $this->children[$child->id()] = [
+            'node' => $child,
+            'next' => $id,
+            'prev' => $prevId,
+        ];
+
+        // tell child I am the new parent
+        $child->setParent($this);
+
+        //clear any cache
+        $this->clear();
+
+        return true;
+    }
+
+    public function insertAfter($id, AbstractNode $child)
+    {
+        $key = null;
+
+        if ( ! isset($this->children[$id])) {
+            return $this;
+        }
+
+        // check integrity
+        if ($this->isAncestor($child->id())) {
+            throw new CircularException('Can not add child. It is my ancestor.');
+        }
+
+        // check if child is itself
+        if ($child->id() == $this->id) {
+            throw new CircularException('Can not set itself as a child.');
+        }
+
+        $nextId = $this->children[$id]['next'];
+        $this->children[$id]['next'] = $child->id();
+
+        if ($nextId) {
+            $this->children[$nextId]['prev'] = $child->id();
+        }
+
+        // add the child
+        $this->children[$child->id()] = [
+            'node' => $child,
+            'next' => $nextId,
+            'prev' => $id,
+        ];
+
+        // tell child I am the new parent
+        $child->setParent($this);
+
+        //clear any cache
+        $this->clear();
+
+        return true;
+    }
 
     /**
      * Removes the child by id.

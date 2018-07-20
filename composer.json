@@ -1,5 +1,5 @@
 {
-    "name": "thesoftwarefanatics/php-html-parser",
+    "name": "stoutlogic/php-html-parser",
     "type": "library",
     "description": "An HTML DOM parser. It allows you to manipulate HTML. Find tags on an HTML page with selectors just like jQuery.",
     "keywords": ["html", "dom", "parser"],
@@ -15,6 +15,10 @@
             "name": "The Software Fanatics GmbH",
             "email": "dev@thesoftwarefanatics.com",
             "homepage": "https://thesoftwarefanatics.com"
+        },
+        {
+            "name": "Stout Logic, LLC",
+            "email": "steve@stoutlogic.com"
         }
     ],
     "require": {

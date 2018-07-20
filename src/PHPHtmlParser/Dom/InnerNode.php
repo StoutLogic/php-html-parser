@@ -252,10 +252,11 @@ abstract class InnerNode extends ArrayNode
      */
     public function firstChild()
     {
-        reset($this->children);
-        $key = key($this->children);
+        $first = array_values(array_filter($this->children, function($child) {
+            return $child['prev'] === null;
+        }));
 
-        return $this->getChild($key);
+        return $this->getChild($first[0]['node']->id());
     }
 
     /**
@@ -265,10 +266,11 @@ abstract class InnerNode extends ArrayNode
      */
     public function lastChild()
     {
-        end($this->children);
-        $key = key($this->children);
+        $last = array_values(array_filter($this->children, function($child) {
+            return $child['next'] === null;
+        }));
 
-        return $this->getChild($key);
+        return $this->getChild($last[0]['node']->id());
     }
 
     /**
